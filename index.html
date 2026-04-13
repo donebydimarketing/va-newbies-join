@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Join VA Newbies PH</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--black:#0D0D0D;--yellow:#F5C800;--red:#CC0000;--dark:#1A1A1A;--card:#222;--gray:#888;--white:#FFF;--border:#333;--green:#00c864;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--black);font-family:'DM Sans',sans-serif;color:var(--white);min-height:100vh;}
+
+/* SCREENS */
+.screen{display:none;}.screen.active{display:block;}
+
+/* HEADER */
+.site-header{background:var(--dark);border-bottom:2px solid var(--yellow);padding:14px 24px;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:100;}
+.site-brand{font-size:14px;font-weight:800;letter-spacing:2px;color:var(--yellow);text-transform:uppercase;}
+
+/* PAGE WRAP */
+.page-wrap{max-width:680px;margin:0 auto;padding:32px 18px 60px;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:32px;}
+.hero-badge{display:inline-block;background:var(--red);color:white;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 18px;border-radius:50px;margin-bottom:14px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(34px,7vw,54px);font-weight:900;line-height:1.1;margin-bottom:14px;}
+.hero h1 span{color:var(--yellow);}
+.hero p{font-size:15px;color:var(--gray);line-height:1.7;max-width:480px;margin:0 auto;}
+.divider{width:50px;height:3px;background:var(--yellow);margin:16px auto 20px;border-radius:2px;}
+
+/* TIER CARDS */
+.tier-section{margin-bottom:28px;}
+.tier-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:12px;}
+.tier-grid{display:flex;flex-direction:column;gap:10px;}
+.tier-card{border:2px solid var(--border);border-radius:14px;padding:18px 20px;cursor:pointer;transition:all .2s;position:relative;}
+.tier-card:hover{border-color:rgba(245,200,0,.4);}
+.tier-card.selected{border-color:var(--yellow);background:rgba(245,200,0,.06);}
+.tier-card input[type="radio"]{position:absolute;opacity:0;width:0;height:0;}
+.tier-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.tier-name{font-size:16px;font-weight:800;}
+.tier-price{font-size:20px;font-weight:900;color:var(--yellow);}
+.tier-duration{font-size:11px;color:var(--gray);margin-bottom:8px;}
+.tier-features{font-size:12.5px;color:rgba(255,255,255,.7);line-height:1.6;}
+.tier-popular{position:absolute;top:-11px;right:16px;background:var(--yellow);color:var(--black);font-size:10px;font-weight:800;padding:3px 12px;border-radius:50px;letter-spacing:.5px;text-transform:uppercase;}
+.tier-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.tier-card.selected .tier-radio{border-color:var(--yellow);background:var(--yellow);}
+.tier-radio-dot{width:8px;height:8px;border-radius:50%;background:var(--black);opacity:0;transition:opacity .2s;}
+.tier-card.selected .tier-radio-dot{opacity:1;}
+
+/* FORM */
+.form-card{background:var(--dark);border:1px solid var(--border);border-radius:18px;padding:28px 22px;margin-bottom:24px;}
+.form-card-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--yellow);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.form-card-title::after{content:'';flex:1;height:1px;background:rgba(245,200,0,.2);}
+.form-stack{display:flex;flex-direction:column;gap:14px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray);}
+.form-group label span{color:var(--yellow);margin-left:2px;}
+.form-group input,.form-group select,.form-group textarea{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px 14px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s,background .2s;width:100%;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--yellow);background:rgba(245,200,0,.05);}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,.2);}
+select option{background:var(--dark);color:white;}
+textarea{resize:vertical;min-height:80px;}
+
+/* CHECKBOX GRID */
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.check-item{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:rgba(255,255,255,.8);}
+.check-item input{accent-color:var(--yellow);width:16px;height:16px;flex-shrink:0;}
+
+/* SECTION SEP */
+.sep{display:flex;align-items:center;gap:10px;margin:6px 0 2px;}
+.sep span{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--yellow);white-space:nowrap;}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:rgba(245,200,0,.15);}
+
+/* SUBMIT BTN */
+.btn-submit{width:100%;padding:16px;background:linear-gradient(135deg,var(--yellow),#e6b800);color:var(--black);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;border:none;border-radius:12px;cursor:pointer;letter-spacing:.5px;transition:transform .2s,box-shadow .2s;box-shadow:0 6px 24px rgba(245,200,0,.3);}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(245,200,0,.4);}
+.err{color:#ff6b6b;font-size:12px;margin-top:8px;display:none;}
+
+/* ── THANK YOU SCREEN ── */
+.ty-wrap{max-width:600px;margin:0 auto;padding:40px 18px 60px;text-align:center;}
+.ty-icon{font-size:64px;margin-bottom:16px;}
+.ty-wrap h1{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--yellow);margin-bottom:10px;}
+.ty-wrap p{font-size:15px;color:var(--gray);line-height:1.7;margin-bottom:28px;}
+
+/* TIER SUMMARY */
+.tier-summary{background:var(--dark);border:2px solid var(--yellow);border-radius:16px;padding:20px 24px;margin-bottom:28px;text-align:left;}
+.tier-summary-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px;}
+.tier-summary-name{font-size:22px;font-weight:900;color:var(--white);margin-bottom:4px;}
+.tier-summary-price{font-size:32px;font-weight:900;color:var(--yellow);}
+.tier-summary-dur{font-size:13px;color:var(--gray);}
+
+/* GCASH CARD */
+.gcash-card{background:linear-gradient(135deg,#00529b,#0070cc);border-radius:16px;padding:24px;margin-bottom:24px;text-align:left;}
+.gcash-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:16px;}
+.gcash-step{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;}
+.gcash-step:last-child{margin-bottom:0;}
+.gcash-num{width:28px;height:28px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;color:white;}
+.gcash-text{font-size:14px;color:white;line-height:1.6;}
+.gcash-text strong{color:#F5C800;font-size:16px;display:block;margin-top:2px;}
+
+/* SCREENSHOT NOTE */
+.screenshot-note{background:rgba(0,200,100,.08);border:1px solid rgba(0,200,100,.25);border-radius:12px;padding:16px;margin-bottom:24px;font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;text-align:left;}
+.screenshot-note strong{color:var(--green);}
+
+/* PORTAL BTN */
+.btn-portal{display:block;width:100%;padding:16px;background:var(--yellow);color:var(--black);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:800;border:none;border-radius:12px;cursor:pointer;text-align:center;text-decoration:none;transition:transform .2s;margin-bottom:12px;}
+.btn-portal:hover{transform:translateY(-2px);}
+.btn-note{font-size:12px;color:var(--gray);}
+
+@media(max-width:480px){.form-row{grid-template-columns:1fr}.check-grid{grid-template-columns:1fr}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-brand">VA Newbies PH</div>
+</header>
+
+<!-- ── SIGN UP SCREEN ── -->
+<div id="screen-signup" class="screen active">
+  <div class="page-wrap">
+
+    <div class="hero">
+      <div class="hero-badge">Membership Now Open</div>
+      <h1>Join <span>VA Newbies PH</span></h1>
+      <div class="divider"></div>
+      <p>Fill out this form to get started. Choose your tier, complete your profile, and you'll receive payment details on the next screen.</p>
+    </div>
+
+    <!-- TIER SELECTION -->
+    <div class="tier-section">
+      <div class="tier-label">Step 1 — Choose Your Membership Tier</div>
+      <div class="tier-grid">
+
+        <label class="tier-card" id="tc-starter" onclick="selectTier('starter')">
+          <input type="radio" name="tier" value="starter"/>
+          <div class="tier-top">
+            <div>
+              <div class="tier-name">Starter</div>
+              <div class="tier-duration">3 months access</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div class="tier-price">&#8369;799</div>
+              <div class="tier-radio"><div class="tier-radio-dot"></div></div>
+            </div>
+          </div>
+          <div class="tier-features">Community Access &nbsp;·&nbsp; Online Courses &nbsp;·&nbsp; Job Board &nbsp;·&nbsp; Group Coaching</div>
+        </label>
+
+        <label class="tier-card" id="tc-core" onclick="selectTier('core')">
+          <div class="tier-popular">Most Popular</div>
+          <input type="radio" name="tier" value="core"/>
+          <div class="tier-top">
+            <div>
+              <div class="tier-name">Core</div>
+              <div class="tier-duration">3 months access</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div class="tier-price">&#8369;1,500</div>
+              <div class="tier-radio"><div class="tier-radio-dot"></div></div>
+            </div>
+          </div>
+          <div class="tier-features">Everything in Starter &nbsp;·&nbsp; 1-on-1 Coaching with Coach Di &nbsp;·&nbsp; Client Matching &nbsp;·&nbsp; Internship Pairing</div>
+        </label>
+
+        <label class="tier-card" id="tc-pro" onclick="selectTier('pro')">
+          <input type="radio" name="tier" value="pro"/>
+          <div class="tier-top">
+            <div>
+              <div class="tier-name">Pro</div>
+              <div class="tier-duration">6 months access</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div class="tier-price">&#8369;2,500</div>
+              <div class="tier-radio"><div class="tier-radio-dot"></div></div>
+            </div>
+          </div>
+          <div class="tier-features">Everything in Core &nbsp;·&nbsp; Priority Client Matching &nbsp;·&nbsp; Certificate of Completion</div>
+        </label>
+
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card">
+      <div class="form-card-title">Step 2 — Your Profile</div>
+      <div class="form-stack">
+
+        <div class="sep"><span>Personal Info</span></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name <span>*</span></label>
+            <input type="text" id="f-fname" placeholder="Ana"/>
+          </div>
+          <div class="form-group">
+            <label>Last Name <span>*</span></label>
+            <input type="text" id="f-lname" placeholder="Reyes"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address <span>*</span></label>
+          <input type="email" id="f-email" placeholder="you@email.com"/>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Mobile / WhatsApp <span>*</span></label>
+            <input type="tel" id="f-phone" placeholder="+63 9XX XXX XXXX"/>
+          </div>
+          <div class="form-group">
+            <label>City / Province</label>
+            <input type="text" id="f-city" placeholder="Cebu City"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Facebook Profile Link <span>*</span></label>
+          <input type="url" id="f-fb" placeholder="facebook.com/yourname"/>
+        </div>
+
+        <div class="sep"><span>VA Background</span></div>
+
+        <div class="form-group">
+          <label>Experience Level <span>*</span></label>
+          <select id="f-exp">
+            <option value="" disabled selected>Select one...</option>
+            <option value="beginner">Absolute Beginner — just starting out</option>
+            <option value="some">Some knowledge, no clients yet</option>
+            <option value="trained">Trained but no clients yet</option>
+            <option value="experienced">Has prior VA experience</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Skills You Have or Want to Learn</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" name="skills" value="Social Media Management"/> Social Media</label>
+            <label class="check-item"><input type="checkbox" name="skills" value="Canva / Graphic Design"/> Canva / Design</label>
+            <label class="check-item"><input type="checkbox" name="skills" value="Email Management"/> Email Management</label>
+            <label class="check-item"><input type="checkbox" name="skills" value="Data Entry & Research"/> Data Entry</label>
+            <label class="check-item"><input type="checkbox" name="skills" value="Content Writing"/> Content Writing</label>
+            <label class="check-item"><input type="checkbox" name="skills" value="Customer Service"/> Customer Service</label>
+            <label class="check-item"><input type="checkbox" name="skills" value="Video Editing"/> Video Editing</label>
+            <label class="check-item"><input type="checkbox" name="skills" value="Admin & Calendar"/> Admin & Calendar</label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Hours Available Per Week</label>
+            <select id="f-hours">
+              <option value="" disabled selected>Select...</option>
+              <option>Less than 5 hrs/week</option>
+              <option>5–10 hrs/week</option>
+              <option>10–20 hrs/week</option>
+              <option>20+ hrs/week</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>When Can You Start?</label>
+            <select id="f-start">
+              <option value="" disabled selected>Select...</option>
+              <option>Immediately</option>
+              <option>Within 1 week</option>
+              <option>Within 2 weeks</option>
+              <option>Next month</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Why do you want to become a VA? <span>*</span></label>
+          <textarea id="f-why" placeholder="Tell Coach Di — be honest and from the heart!"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>How did you find VA Newbies PH?</label>
+          <select id="f-source">
+            <option value="" disabled selected>Select one...</option>
+            <option>Facebook Group / Post</option>
+            <option>Facebook Ad</option>
+            <option>Referral / Friend</option>
+            <option>Instagram</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <button class="btn-submit" onclick="submitForm()">Proceed to Payment Details</button>
+        <div class="err" id="form-err"></div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── THANK YOU SCREEN ── -->
+<div id="screen-thankyou" class="screen">
+  <div class="ty-wrap">
+
+    <div class="ty-icon">🎉</div>
+    <h1>You're Almost In!</h1>
+    <p>Thanks for signing up, <strong id="ty-name" style="color:white"></strong>! One last step — complete your payment below to activate your membership.</p>
+
+    <!-- Tier Summary -->
+    <div class="tier-summary">
+      <div class="tier-summary-label">Your Selected Tier</div>
+      <div class="tier-summary-name" id="ty-tier-name">Core</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-top:4px;">
+        <div class="tier-summary-price" id="ty-tier-price">&#8369;1,500</div>
+        <div class="tier-summary-dur" id="ty-tier-dur">/ 3 months</div>
+      </div>
+    </div>
+
+    <!-- GCash Payment -->
+    <div class="gcash-card">
+      <div class="gcash-label">Payment Instructions — GCash</div>
+      <div class="gcash-step">
+        <div class="gcash-num">1</div>
+        <div class="gcash-text">Open your GCash app and tap <strong>Send Money</strong></div>
+      </div>
+      <div class="gcash-step">
+        <div class="gcash-num">2</div>
+        <div class="gcash-text">Send to this number:<strong>0935-941-2268</strong>Name: Maria Christina Nel Lopez</div>
+      </div>
+      <div class="gcash-step">
+        <div class="gcash-num">3</div>
+        <div class="gcash-text">Amount to send:<strong id="ty-gcash-amount">&#8369;1,500</strong></div>
+      </div>
+      <div class="gcash-step">
+        <div class="gcash-num">4</div>
+        <div class="gcash-text">Use your full name as the reference/note</div>
+      </div>
+    </div>
+
+    <!-- Screenshot Note -->
+    <div class="screenshot-note">
+      <strong>Important:</strong> After sending, take a screenshot of your GCash confirmation and send it to Coach Di on Facebook Messenger. Your account will be activated within 24 hours once payment is confirmed. 💛
+    </div>
+
+    <!-- Portal Button -->
+    <a href="https://donebydimarketing.github.io/va-newbies-portal/" class="btn-portal">
+      Go to Member Portal
+    </a>
+    <div class="btn-note">Your login will be activated after payment confirmation.</div>
+
+  </div>
+</div>
+
+<script>
+var selectedTier = '';
+var tierData = {
+  starter: { name: 'Starter', price: '&#8369;799', amount: '&#8369;799', dur: '/ 3 months' },
+  core:    { name: 'Core',    price: '&#8369;1,500', amount: '&#8369;1,500', dur: '/ 3 months' },
+  pro:     { name: 'Pro',     price: '&#8369;2,500', amount: '&#8369;2,500', dur: '/ 6 months' }
+};
+
+function selectTier(tier) {
+  selectedTier = tier;
+  document.querySelectorAll('.tier-card').forEach(function(c){ c.classList.remove('selected'); });
+  document.getElementById('tc-' + tier).classList.add('selected');
+}
+
+var SURL='https://mbcwgtrliiocqcgwbfnu.supabase.co';
+var SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1iY3dndHJsaWlvY3FjZ3diZm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5NDQwMzMsImV4cCI6MjA5MTUyMDAzM30.bs3bm6PEK82hr2T9NPs6lQ6jlgolL6wE-TDblXDEMVE';
+var sb=supabase.createClient(SURL,SKEY);
+
+async function submitForm() {
+  var fname = document.getElementById('f-fname').value.trim();
+  var lname = document.getElementById('f-lname').value.trim();
+  var email = document.getElementById('f-email').value.trim();
+  var phone = document.getElementById('f-phone').value.trim();
+  var fb    = document.getElementById('f-fb').value.trim();
+  var exp   = document.getElementById('f-exp').value;
+  var why   = document.getElementById('f-why').value.trim();
+  var city  = document.getElementById('f-city').value.trim();
+  var hours = document.getElementById('f-hours').value;
+  var start = document.getElementById('f-start').value;
+  var source= document.getElementById('f-source').value;
+  var err   = document.getElementById('form-err');
+  err.style.display = 'none';
+
+  // Collect selected skills
+  var skills = Array.from(document.querySelectorAll('input[name="skills"]:checked')).map(function(c){return c.value;}).join(', ');
+
+  if (!selectedTier) { err.textContent = 'Please select a membership tier first.'; err.style.display='block'; window.scrollTo(0,0); return; }
+  if (!fname || !lname) { err.textContent = 'Please enter your full name.'; err.style.display='block'; return; }
+  if (!email) { err.textContent = 'Please enter your email address.'; err.style.display='block'; return; }
+  if (!phone) { err.textContent = 'Please enter your mobile number.'; err.style.display='block'; return; }
+  if (!fb) { err.textContent = 'Please enter your Facebook profile link.'; err.style.display='block'; return; }
+  if (!exp) { err.textContent = 'Please select your experience level.'; err.style.display='block'; return; }
+  if (!why) { err.textContent = 'Please tell Coach Di why you want to become a VA.'; err.style.display='block'; return; }
+
+  // Disable button
+  var btn = document.querySelector('.btn-submit');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  // Save to Supabase
+  var res = await sb.from('signups').insert({
+    full_name: fname + ' ' + lname,
+    email: email,
+    phone: phone,
+    facebook_url: fb,
+    city: city,
+    tier: selectedTier,
+    experience_level: exp,
+    skills: skills,
+    hours_per_week: hours,
+    start_availability: start,
+    why_va: why,
+    source: source,
+    payment_status: 'unpaid'
+  });
+
+  btn.textContent = 'Proceed to Payment Details';
+  btn.disabled = false;
+
+  if (res.error) {
+    err.textContent = 'Something went wrong. Please try again. (' + res.error.message + ')';
+    err.style.display='block';
+    return;
+  }
+
+  // Populate thank you screen
+  var td = tierData[selectedTier];
+  document.getElementById('ty-name').textContent = fname + '!';
+  document.getElementById('ty-tier-name').textContent = td.name;
+  document.getElementById('ty-tier-price').innerHTML = td.price;
+  document.getElementById('ty-tier-dur').textContent = td.dur;
+  document.getElementById('ty-gcash-amount').innerHTML = td.amount;
+
+  // Switch screens
+  document.getElementById('screen-signup').classList.remove('active');
+  document.getElementById('screen-thankyou').classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
